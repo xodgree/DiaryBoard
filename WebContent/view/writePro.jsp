@@ -9,13 +9,14 @@
 </head>
 <body>
 <%request.setCharacterEncoding("euc-kr"); %>
-<jsp:useBean id = "diary" class = "board.DiaryDataBean">
-<jsp:setProperty name ="diary" property="*"/>
 
-<% DiaryDBBean dbControl = new DiaryDBBean();
-	dbControl.insertDiary(diary);
+<jsp:useBean id="diary" class= "board.DiaryDataBean">	
+	<jsp:setProperty name = "diary" property="*"/>		
+</jsp:useBean>
+
+<% DiaryDBBean dbcontrol = new DiaryDBBean();
+	dbcontrol.insertDiary(diary);
 	response.sendRedirect("list.jsp");
 %>
-</jsp:useBean>
 </body>
 </html>

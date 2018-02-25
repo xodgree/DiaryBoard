@@ -66,28 +66,29 @@ public class DiaryDBBean {
 		return diarys;
 	}
 	
+	//데이터 삽입
 	public void insertDiary(DiaryDataBean diary) {
 		/*
 		 Db에 넣을때 필요한것
 		 connect con, sql(쿼리), preparedstatement */
 		Connection con = null;
-		String sql = "insert into diarys (num,title,content,regdate)" + "values(?,?,?,sysdate)";
+		String sql = "insert into diarys(num,title,content,regdate) values(?,?,?,sysdate) ";
 		PreparedStatement ps = null;
-		
-		// 다이어리 시퀀스를 얻는 기능
 		
 		con = getConnection();
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setInt(1,getDiarySeq());
+			ps.setInt(1, getDiarySeq());
 			ps.setString(2, diary.getTitle());
 			ps.setString(3, diary.getContent());
-			ps.executeUpdate();
+			
+			ps.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 		}
+
+		
 	}
 	//시퀀스 가져오는 메소드
 	public int getDiarySeq() {
@@ -96,14 +97,12 @@ public class DiaryDBBean {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int number = 0;
-		
 		con = getConnection();
 		try {
 			ps = con.prepareStatement(sql);
-			
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				number = rs.getInt(1) +1;
+				number = rs.getInt(1)+1;
 			}else {
 				number = 1;
 			}
@@ -111,7 +110,34 @@ public class DiaryDBBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(number);
 		return number;
+	}
+	
+	//글 보기 메소드
+	/*
+	 	num을 파라미터로 받아서 쿼리 접속해서 해당 num의 제목과 내용을 가져옴.
+	 * */
+	public DiaryDataBean viewDiary(int num){
+		Connection con = null;
+		String sql = "select title,content from diarys where num = ?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		DiaryDataBean diary = new DiaryDataBean();
+		con = getConnection();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, num);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				diary.setTitle(rs.getString("title"));
+				diary.setContent(rs.getString("content"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return diary;
 	}
 }
 	

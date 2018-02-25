@@ -1,3 +1,5 @@
+<%@page import="board.DiaryDataBean"%>
+<%@page import="board.DiaryDBBean"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -9,24 +11,29 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
+<%
+ int num = Integer.parseInt(request.getParameter("num"));
+ DiaryDBBean dbcontrol = new DiaryDBBean();
+DiaryDataBean diary =  dbcontrol.viewDiary(num);
+
+%>
 <div class = "w3-card">
-<div class = "w3-container w3-teal" > <h1>일기쓰기</h1> </div>
-<!-- post방식으로 writePro에 파라미터를 보냅니다. -->
-	<form class = "w3-container" method="post" action="writePro.jsp">
-	
+<div class = "w3-container w3-teal" > <h1>일기보기</h1> </div>
+	<div class = "w3-container">
 		<p>                          
-			<label>일기 제목: </label>
-			<input type = "text" name = "title"> 
+			일기 제목: <%= diary.getTitle() %>
 		</p>
 		<p>
-			<label>일기 내용: </label>  
-			<input type = "text" name = "content"> 
+			일기 내용: <%=diary.getContent()  %>
 		</p>
 		
 		<P>
-		<input type = "submit" value="일기작성">
+		<button type="button">수정</button>
+		<button type="button">삭제</button>
+		<button type="button">목록</button>
 		</P>
-	</form>
+	</div>
 </div>
+
 </body>
 </html>

@@ -42,7 +42,7 @@
 				%>
 			<tr>
 				<td><%= diary.getNum() %></td>
-				<td><%= diary.getTitle() %></td>
+				<td><a href ="view.jsp?num=<%= diary.getNum()%>"><%= diary.getTitle() %></a></td>
 				<td><%= diary.getRegdate() %></td>
 				
 			</tr>
