@@ -4,77 +4,117 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class DiaryDBBean {
 	
-	//DB와 연결하기 위한 메소드
-	public static Connection getConnection() {
+		// DB와 연결할때 필요한 것들 (url,dbid,dbpw,formame)
+	public Connection getConnection() {
+		String DbUrl = "jdbc:oracle:thin:@localhost:1521:orcl";
+		String DbId = "scott";
+		String DbPw = "tiger";
 		Connection con = null;
+		
+		//forname 오라클 라이브러리 쓴다는걸 명시
 		try {
-			String jdbcUrl = "jdbc:orcl:thin:@localhost:1521:orcl";
-			String dbId = "scott";
-			String dbPass = "tiger";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection(jdbcUrl,dbId,dbPass);
-		}catch(Exception e) {
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//드라이버매니저의 getConnection메소드를 써서 연결하려는 db정보를 넘김.
+		try {
+			con = DriverManager.getConnection(DbUrl, DbId, DbPw);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return con;
-		
 	}
-	//데이터 가져오는 메소드
-	public List getDiarys() {
-		Connection conn = null;	//DB와 연결하는 객체
-		PreparedStatement pstmt = null;	//sql구문 실행하는 객체
-		/*
-		execteQuery로 명령하면 ResultSet 객체를 돌려줌.
-		execteQuery:DB에 명령
-		ResultSet : 명령에 대한 반환값.
-		ex) ResultSet = execteQuery(쿼리문); */
+
+	public ArrayList<DiaryDataBean> getDiarys(){	
+		//DB연결해서 쿼리 날릴때 필요한 요소들 
+		Connection con = null;
+		String sql = "Select num,title,content,regdate from diarys order by regdate desc";
+		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
-		//다이어리를 저장할 리스트 선언
-		List DiaryList = null;
-		String sql = "";
-		
+		//diary 객체 담을 배열 1개 만들어줌.
+		ArrayList<DiaryDataBean> diarys = new ArrayList<DiaryDataBean>();
+
+		con = getConnection();
 		try {
-			conn = getConnection();	//위의 연결 메소드
-			sql = "select * from diary";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				DiaryList = new ArrayList();
-				do {
-					DiaryDataBean diary = new DiaryDataBean();
-					diary.setNum(rs.getInt("num"));
-					diary.setTitle(rs.getString("title"));
-					diary.setContent(rs.getString("content"));
-					diary.setDate(rs.getTimestamp("regdate"));
-					
-					
-				}while(rs.next());
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				DiaryDataBean diary = new DiaryDataBean();	//객체 생성
+				diary.setNum(rs.getInt("num"));
+				diary.setRegdate(rs.getDate("regdate"));
+				diary.setContent(rs.getString("content"));
+				diary.setTitle(rs.getString("title"));
+				
+				//diarys 배열에 담아줌.
+				diarys.add(diary);
 				
 			}
-		}catch(Exception e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			close(conn,rs,pstmt);
 		}
-		return DiaryList;
 		
+		return diarys;
 	}
 	
-	private void close(Connection conn, ResultSet rs, PreparedStatement pstmt) {
-		// TODO Auto-generated method stub
+	public void insertDiary(DiaryDataBean diary) {
+		/*
+		 Db에 넣을때 필요한것
+		 connect con, sql(쿼리), preparedstatement */
+		Connection con = null;
+		String sql = "insert into diarys (num,title,content,regdate)" + "values(?,?,?,sysdate)";
+		PreparedStatement ps = null;
 		
+		// 다이어리 시퀀스를 얻는 기능
+		
+		con = getConnection();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1,getDiarySeq());
+			ps.setString(2, diary.getTitle());
+			ps.setString(3, diary.getContent());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+	}
+	//시퀀스 가져오는 메소드
+	public int getDiarySeq() {
+		Connection con = null;
+		String sql = "select diary_seq.nextval from dual";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int number = 0;
+		
+		con = getConnection();
+		try {
+			ps = con.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				number = rs.getInt(1) +1;
+			}else {
+				number = 1;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
 	}
 }
-
-
+	
 
 
 

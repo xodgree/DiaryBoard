@@ -6,8 +6,8 @@ public class DiaryDataBean {
 	private int num;
 	private String title;
 	private String content;
-	private Date date;
 	
+	private Date regdate;
 	public int getNum() {
 		return num;
 	}
@@ -20,18 +20,25 @@ public class DiaryDataBean {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getDate() {
-		return date;
+	public Date getRegdate() {
+		return regdate;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
 	}
+
+	@Override
+	public String toString() {
+		return "DiaryDataBean [num=" + num + ", title=" + title + ", content=" + content + ", regdate=" + regdate + "]";
+	}
+	
 }
 
 
