@@ -82,7 +82,7 @@ public class DiaryDBBean {
 			ps.setString(2, diary.getTitle());
 			ps.setString(3, diary.getContent());
 			
-			ps.executeQuery();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,12 +139,28 @@ public class DiaryDBBean {
 		}
 		return diary;
 	}
+	//삭제 메소드
+	/*
+	 * DB에 접속해서 삭제 쿼리를 날린다. return은 x
+	 */
+	public int delete(int num) {
+		Connection conn = null;
+		String sql = "delete from diarys where num = ?";
+		PreparedStatement ps = null;
+		conn = getConnection();
+		int x = -1;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, num);
+			x = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(x);
+		return x;
+	}
 }
-	
-
-
-
-
 
 
 

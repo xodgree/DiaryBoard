@@ -17,6 +17,19 @@
 DiaryDataBean diary =  dbcontrol.viewDiary(num);
 
 %>
+<script type="text/javascript" language="javascript">
+function btn_js_confirm_click(num){
+	  /* confirm(문자열, 초기값) */
+	  var check = confirm("일기를 지우시겠습니까?");
+	  /* if(check == true) else false */
+	  if(check){
+		  /* 삭제 메소드를 호출시켜 db에서 삭제한 후 list.jsp로 돌아감.*/
+		  window.location.href="deletePro.jsp?num=" + num; 
+	  }else{
+		  
+	  }
+}
+</script>
 <div class = "w3-card">
 <div class = "w3-container w3-teal" > <h1>일기보기</h1> </div>
 	<div class = "w3-container">
@@ -31,6 +44,8 @@ DiaryDataBean diary =  dbcontrol.viewDiary(num);
 		<button type="button">수정</button>
 		<!-- 삭제 페이지로 이동할때 num도 같이 갖고 감. -->
 		<button type="button" onclick="location.href = 'deleteForm.jsp'">삭제</button>
+		<input type="button" name="btn_js_confirm" id="btn_js_confirm" onclick="btn_js_confirm_click(<%= num %>);" value="확인창" />
+
 		<button type="button" onclick="location.href = 'list.jsp'">목록</button>
 		</P>
 	</div>
