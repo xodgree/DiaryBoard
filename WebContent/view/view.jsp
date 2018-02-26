@@ -29,8 +29,9 @@ DiaryDataBean diary =  dbcontrol.viewDiary(num);
 		
 		<P>
 		<button type="button">수정</button>
-		<button type="button">삭제</button>
-		<button type="button">목록</button>
+		<!-- 삭제 페이지로 이동할때 num도 같이 갖고 감. -->
+		<button type="button" onclick="location.href = 'deleteForm.jsp'">삭제</button>
+		<button type="button" onclick="location.href = 'list.jsp'">목록</button>
 		</P>
 	</div>
 </div>
