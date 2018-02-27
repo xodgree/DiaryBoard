@@ -41,12 +41,14 @@ function btn_js_confirm_click(num){
 		</p>
 		
 		<P>
-		<button type="button">수정</button>
+		<!-- 수정 페이지로 이동할 때 num 가져감 -->
+		<input type="button" onclick="document.location.href='updateForm.jsp?num=<%= num %>'" value="수정" />
+		&nbsp;&nbsp;
 		<!-- 삭제 페이지로 이동할때 num도 같이 갖고 감. -->
-		<button type="button" onclick="location.href = 'deleteForm.jsp'">삭제</button>
-		<input type="button" name="btn_js_confirm" id="btn_js_confirm" onclick="btn_js_confirm_click(<%= num %>);" value="확인창" />
-
+		<input type="button" name="btn_js_confirm" id="btn_js_confirm" onclick="btn_js_confirm_click(<%= num %>);" value="삭제" />
+		&nbsp;&nbsp;
 		<button type="button" onclick="location.href = 'list.jsp'">목록</button>
+		&nbsp;&nbsp;
 		</P>
 	</div>
 </div>

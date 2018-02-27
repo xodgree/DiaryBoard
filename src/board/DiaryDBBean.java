@@ -160,6 +160,28 @@ public class DiaryDBBean {
 		System.out.println(x);
 		return x;
 	}
+	//수정 메소드
+	/*
+	 * db에 접속하여 수정 쿼리를 날린다.
+	 * */
+	public int update(DiaryDataBean diary) {
+		Connection con = null;
+		String sql = "update diarys set title = ?,content = ? where num = ?";
+		PreparedStatement ps = null;
+		con = getConnection();
+		int result = -1;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, diary.getTitle());
+			ps.setString(2, diary.getContent());
+			ps.setInt(3, diary.getNum());
+			result = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
 
 
