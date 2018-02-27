@@ -1,5 +1,5 @@
+
 <%@page import="board.DiaryDBBean"%>
-<%@page import="board.DiaryDataBean"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -9,16 +9,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- view.jsp에서 넘어온 num파라미터를 받고 메소드 실행시켜서 DB로 보내서 쿼리날리고 list.jsp로 리다이렉트 -->
 <% 
-/* view에서 넘어온 파라미터 num을 받고 
-	DiaryDBBean 객체를 만들어서 파라미터로 num을 넣어서 삭제 메소드 실행 후 메인으로 이동한다.
-*/
 int num = Integer.parseInt(request.getParameter("num"));
-DiaryDBBean dbcontrol = new DiaryDBBean();
-dbcontrol.delete(num);
-response.sendRedirect("list.jsp");
-
+	DiaryDBBean dbcon = new DiaryDBBean();
+	dbcon.delete(num);
+	response.sendRedirect("list.jsp");
 %>
-
 </body>
 </html>

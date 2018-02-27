@@ -1,5 +1,5 @@
-<%@page import="board.DiaryDataBean"%>
 <%@page import="board.DiaryDBBean"%>
+<%@page import="board.DiaryDataBean"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -11,15 +11,19 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
+<!-- 1.list.jsp에서 num을 받아서 
+	2. DiaryDBBean에 view 메소드를 만들고
+	3. DiaryDBBean 객체를 만든다음 form에 num에 맞는 데이터를 뿌림. 
+	-->
 <%
- int num = Integer.parseInt(request.getParameter("num"));
- DiaryDBBean dbcontrol = new DiaryDBBean();
+int num = Integer.parseInt(request.getParameter("num"));
+DiaryDBBean dbcontrol = new DiaryDBBean();
 DiaryDataBean diary =  dbcontrol.viewDiary(num);
-
 %>
-<script type="text/javascript" language="javascript">
-function btn_js_confirm_click(num){
-	  /* confirm(문자열, 초기값) */
+
+<script type="text/javascript" >
+function   check(num) {
+	 /* confirm(문자열, 초기값) */
 	  var check = confirm("일기를 지우시겠습니까?");
 	  /* if(check == true) else false */
 	  if(check){
@@ -29,29 +33,29 @@ function btn_js_confirm_click(num){
 		  
 	  }
 }
+	
 </script>
+
 <div class = "w3-card">
 <div class = "w3-container w3-teal" > <h1>일기보기</h1> </div>
-	<div class = "w3-container">
+	<form class="w3-container">
 		<p>                          
-			일기 제목: <%= diary.getTitle() %>
+			<label>일기 제목: <%= diary.getTitle() %></label>
 		</p>
 		<p>
-			일기 내용: <%=diary.getContent()  %>
+			<label>일기 내용: <%= diary.getContent() %></label>  
 		</p>
 		
 		<P>
-		<!-- 수정 페이지로 이동할 때 num 가져감 -->
-		<input type="button" onclick="document.location.href='updateForm.jsp?num=<%= num %>'" value="수정" />
+		<input type = "button" value="수정" onclick="document.location.href='updateForm.jsp?num=<%=num%>'"/>
 		&nbsp;&nbsp;
-		<!-- 삭제 페이지로 이동할때 num도 같이 갖고 감. -->
-		<input type="button" name="btn_js_confirm" id="btn_js_confirm" onclick="btn_js_confirm_click(<%= num %>);" value="삭제" />
+		<!-- 삭제 페이지로 갈때 num을 보내야함. -->
+		<input type = "button" value="삭제" onclick = "check(<%=num%>)"/>
 		&nbsp;&nbsp;
-		<button type="button" onclick="location.href = 'list.jsp'">목록</button>
+		<input type = "button" value="목록" onclick = "document.location.href='list.jsp'"/>
 		&nbsp;&nbsp;
 		</P>
-	</div>
+	</form>
 </div>
-
 </body>
 </html>

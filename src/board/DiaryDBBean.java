@@ -113,21 +113,19 @@ public class DiaryDBBean {
 		System.out.println(number);
 		return number;
 	}
-	
-	//글 보기 메소드
-	/*
-	 	num을 파라미터로 받아서 쿼리 접속해서 해당 num의 제목과 내용을 가져옴.
-	 * */
-	public DiaryDataBean viewDiary(int num){
-		Connection con = null;
-		String sql = "select title,content from diarys where num = ?";
+	//view 메소드
+	/* 파라미터로 num을 받아서 DB접속하여 select쿼리 날려서 num 집어넣고 DiaryDataBean 객체를 만들어서 set 시켜줌 리던 diary*/
+	public DiaryDataBean viewDiary(int num) {
+		Connection conn = null;
+		String sql ="select title,content from diarys where num = ?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		conn = getConnection();
 		DiaryDataBean diary = new DiaryDataBean();
-		con = getConnection();
 		try {
-			ps = con.prepareStatement(sql);
+			ps = conn.prepareStatement(sql);
 			ps.setInt(1, num);
+			
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				diary.setTitle(rs.getString("title"));
@@ -140,33 +138,27 @@ public class DiaryDBBean {
 		return diary;
 	}
 	//삭제 메소드
-	/*
-	 * DB에 접속해서 삭제 쿼리를 날린다. return은 x
-	 */
 	public int delete(int num) {
 		Connection conn = null;
 		String sql = "delete from diarys where num = ?";
 		PreparedStatement ps = null;
+		int result = -1;
 		conn = getConnection();
-		int x = -1;
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, num);
-			x = ps.executeUpdate();
+			result = ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(x);
-		return x;
+		return result;
 	}
+	
 	//수정 메소드
-	/*
-	 * db에 접속하여 수정 쿼리를 날린다.
-	 * */
 	public int update(DiaryDataBean diary) {
 		Connection con = null;
-		String sql = "update diarys set title = ?,content = ? where num = ?";
+		String sql = "update diarys set title = ?,content=? where num = ?";
 		PreparedStatement ps = null;
 		con = getConnection();
 		int result = -1;
@@ -182,6 +174,9 @@ public class DiaryDBBean {
 		}
 		return result;
 	}
+
+
+
 }
 
 
