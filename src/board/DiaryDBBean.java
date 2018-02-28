@@ -33,7 +33,7 @@ public class DiaryDBBean {
 		}
 		return con;
 	}
-
+	//목록에 데이터 뿌릴때
 	public ArrayList<DiaryDataBean> getDiarys(){	
 		//DB연결해서 쿼리 날릴때 필요한 요소들 
 		Connection con = null;
@@ -113,6 +113,7 @@ public class DiaryDBBean {
 		System.out.println(number);
 		return number;
 	}
+	
 	//view 메소드
 	/* 파라미터로 num을 받아서 DB접속하여 select쿼리 날려서 num 집어넣고 DiaryDataBean 객체를 만들어서 set 시켜줌 리던 diary*/
 	public DiaryDataBean viewDiary(int num) {
@@ -137,6 +138,7 @@ public class DiaryDBBean {
 		}
 		return diary;
 	}
+	
 	//삭제 메소드
 	public int delete(int num) {
 		Connection conn = null;

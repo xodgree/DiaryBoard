@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%request.setCharacterEncoding("euc-kr"); %>
 <jsp:useBean id="diary" class= "board.DiaryDataBean">	
 <jsp:setProperty name = "diary" property="*"/>
 </jsp:useBean>
